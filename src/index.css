@@ -1,69 +1,91 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  background: rgb(238, 238, 238);
+  overflow: auto;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+body::-webkit-scrollbar {
+  overflow: hidden;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.text__primary {
+  color: #0fa588 !important;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.color__primary {
+  background: #0fa588 !important;
+}
+
+.color__primary-80 {
+  background: #3fb7a0 !important;
+}
+
+.color__primary-70 {
+  background: #57c0ac !important;
+}
+
+.color__primary-60 {
+  background: #6fc9b8 !important;
+}
+
+.color__primary-50 {
+  background: #87d2c3 !important;
+}
+
+.color__primary-40 {
+  background: #9fdbcf !important;
+}
+
+.color__primary-30 {
+  background: #b7e4db !important;
+}
+
+.color__primary-20 {
+  background: #cfede7 !important;
+}
+
+.color__primary-10 {
+  background: #e7f6f3 !important;
+}
+
+.color__secondary {
+  background: #f7901e !important;
+}
+
+.color__secondary-80 {
+  background: #f9a64b !important;
+}
+
+.color__secondary-70 {
+  background: #f9b162 !important;
+}
+
+.color__secondary-60 {
+  background: #fabc78 !important;
+}
+
+.color__secondary-50 {
+  background: #fbc78f !important;
+}
+
+.color__secondary-40 {
+  background: #fcd3a5 !important;
+}
+
+.color__secondary-30 {
+  background: #fddebb !important;
+}
+
+.color__secondary-20 {
+  background: #fde9d2 !important;
+}
+
+.color__secondary-10 {
+  background: #fef4e8 !important;
 }
