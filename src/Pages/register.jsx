@@ -1,23 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Input } from "../Components/InputForm/inputForm";
-import { loginUser } from "../Services/api";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../Layouts/header";
+import { Input } from "../Components/InputForm/inputForm";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { addUser } from "../Services/api";
 
-const Login = () => {
+const Register = () => {
   const cookiesToken = Cookies.get("token");
   const buttonRef = useRef(null);
   const navigate = useNavigate();
   const [errors, setErrors] = useState("");
-  const [logForm, setLogForm] = useState({
+  const [regForm, setRegForm] = useState({
+    name: "",
     email: "",
     password: "",
+    password_confirmation: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setLogForm({ ...logForm, [name]: value });
+    setRegForm({ ...regForm, [name]: value });
   };
 
   const handleKeyPress = (event) => {
@@ -26,9 +28,15 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    if (cookiesToken) {
+      navigate("/");
+    }
+  }, [navigate]);
+
   const handleSubmit = () => {
     const fetchData = async () => {
-      const user = await loginUser({ logForm, setErrors });
+      const user = await addUser({ regForm, setErrors });
       Cookies.set("token", user.token, { expires: 2 });
       navigate("/");
     };
@@ -36,28 +44,29 @@ const Login = () => {
     fetchData();
   };
 
-  useEffect(() => {
-    if (cookiesToken) {
-      navigate("/");
-    }
-  }, [navigate]);
-
   return (
     <>
-      <PageHeader location={"/"} />
+      <PageHeader location={"/login"} />
       <div className="container">
         <div className="row">
           <div className="col">
             <div className="d-flex flex-column justify-content-center align-items-center p-2 mb-3">
-              <h3 className="mt-2">Login</h3>
+              <h3 className="mt-2">Register</h3>
             </div>
-            <p className="text-danger">{errors.error}</p>
+            <Input
+              inputLabel={"Nama"}
+              typeInput={"text"}
+              nameInput={"name"}
+              placeholder={"Masukkan nama anda"}
+              onKeyDown={handleKeyPress}
+              onChange={handleInputChange}
+              error={errors.name}
+            />
             <Input
               inputLabel={"Alamat email"}
               typeInput={"email"}
               nameInput={"email"}
               placeholder={"Masukkan alamat email anda"}
-              value={logForm.email}
               onKeyDown={handleKeyPress}
               onChange={handleInputChange}
               error={errors.email}
@@ -67,7 +76,15 @@ const Login = () => {
               typeInput={"password"}
               nameInput={"password"}
               placeholder={"Masukkan password anda"}
-              value={logForm.password}
+              onKeyDown={handleKeyPress}
+              onChange={handleInputChange}
+              error={errors.password}
+            />
+            <Input
+              inputLabel={"Konfirmasi password"}
+              typeInput={"password"}
+              nameInput={"password_confirmation"}
+              placeholder={"Masukkan konfirmasi password anda"}
               onKeyDown={handleKeyPress}
               onChange={handleInputChange}
               error={errors.password}
@@ -77,10 +94,10 @@ const Login = () => {
               ref={buttonRef}
               onClick={handleSubmit}
             >
-              Login
+              Register
             </button>
             <p className="text-center mt-3">
-              Tidak mempunyai akun? <a href="/register">Register sekarang</a>
+              Sudah mempunyai akun? <a href="/login">Login sekarang</a>
             </p>
           </div>
         </div>
@@ -89,4 +106,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

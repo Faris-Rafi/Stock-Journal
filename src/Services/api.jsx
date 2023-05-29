@@ -15,12 +15,14 @@ export const fetchUser = async (cookiesToken) => {
   }
 };
 
-export const addUser = async (regForm) => {
+export const addUser = async ({ regForm, setErrors }) => {
   try {
     const response = await api.post(`/register`, regForm);
     return response.data;
   } catch (error) {
-    console.log(error);
+    if (error.response.status === 422) {
+      setErrors(error.response.data.errors);
+    }
   }
 };
 

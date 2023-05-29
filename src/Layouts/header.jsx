@@ -31,14 +31,14 @@ export const Header = (data) => {
   );
 };
 
-export const PageHeader = () => {
+export const PageHeader = ({ location }) => {
   return (
     <div className="container border-bottom mb-3">
       <p
         style={{ cursor: "pointer" }}
         onClick={(e) => {
           e.preventDefault();
-          window.location.href = "/";
+          window.location.href = `${location}`;
         }}
       >
         <i className="bi bi-arrow-left"></i> Back

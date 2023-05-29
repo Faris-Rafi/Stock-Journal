@@ -4,7 +4,6 @@ export const Input = ({
   inputLabel,
   typeInput,
   nameInput,
-  classname,
   placeholder,
   value,
   onKeyDown,
