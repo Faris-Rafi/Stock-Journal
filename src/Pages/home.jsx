@@ -1,28 +1,38 @@
 import React, { useEffect, useState } from "react";
-import TitleCard from "../Components/Cards/titleCard";
-import Icons from "../Components/PageIcons/icons";
+import { TitleCard } from "../Components/Cards/Cards";
+import { Icons } from "../Components/PageIcons/icons";
 import Cookies from "js-cookie";
 import { fetchUser } from "../Services/api";
 import { Header } from "../Layouts/header";
+import Loading from "../Components/Loading/loading";
+import Container from "../Layouts/container";
 
 const Home = () => {
   const cookiesToken = Cookies.get("token");
   const [username, setUsername] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   if (cookiesToken) {
     useEffect(() => {
       const fetchData = async () => {
         const user = await fetchUser(cookiesToken);
         setUsername(user.name);
+        setIsLoading(false);
       };
 
       fetchData();
     }, []);
+  } else {
+    useEffect(() => {
+      setIsLoading(false);
+    }, []);
   }
 
+  if (isLoading) return <Loading />;
+
   return (
-    <>
-    <Header data={username} />
+    <Container>
+      <Header data={username} />
       {!username ? (
         <TitleCard
           backgroundColor={"color__primary"}
@@ -56,7 +66,7 @@ const Home = () => {
           navigateTo={"/ara-arb"}
         />
       </div>
-    </>
+    </Container>
   );
 };
 

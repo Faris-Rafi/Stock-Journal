@@ -1,7 +1,6 @@
 import React from "react";
 import Footer from "./footer";
 import "./styles/container.css";
-import { Header } from "./header";
 
 const Container = ({ children }) => {
   return (

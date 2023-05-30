@@ -1,7 +1,14 @@
 import React from "react";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export const Header = (data) => {
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+    navigate("/login");
+  };
+
   const handleLogout = () => {
     Cookies.remove("token");
     navigate("/login");
@@ -12,13 +19,7 @@ export const Header = (data) => {
       <div className="d-flex justify-content-between align-items-center">
         <p className="fs-5">Jurham</p>
         {data.data === undefined ? (
-          <p
-            style={{ cursor: "pointer" }}
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = "/login";
-            }}
-          >
+          <p style={{ cursor: "pointer" }} onClick={handleClick}>
             Login <i className="bi bi-box-arrow-in-left"></i>
           </p>
         ) : (
@@ -31,16 +32,16 @@ export const Header = (data) => {
   );
 };
 
-export const PageHeader = ({ location }) => {
+export const PageHeader = ({ navigateTo }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(navigateTo);
+  };
+
   return (
     <div className="container border-bottom mb-3">
-      <p
-        style={{ cursor: "pointer" }}
-        onClick={(e) => {
-          e.preventDefault();
-          window.location.href = `${location}`;
-        }}
-      >
+      <p style={{ cursor: "pointer" }} onClick={handleClick}>
         <i className="bi bi-arrow-left"></i> Back
       </p>
     </div>

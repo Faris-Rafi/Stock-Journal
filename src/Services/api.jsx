@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://api.jurham.id/api",
+  baseURL: "http://127.0.0.1:8000/api",
 });
 
 export const fetchUser = async (cookiesToken) => {
@@ -35,7 +35,16 @@ export const loginUser = async ({ logForm, setErrors }) => {
       setErrors(error.response.data.errors);
     }
     if (error.response.status === 401) {
-      setErrors({ error: "Invalid Email or Password." });
+      setErrors({ error: "Email atau Password invalid." });
     }
+  }
+};
+
+export const getFeeTransaction = async () => {
+  try {
+    const response = await api.get("/feeTransaction");
+    return response.data;
+  } catch (error) {
+    console.log(error);
   }
 };

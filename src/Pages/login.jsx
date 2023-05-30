@@ -4,6 +4,7 @@ import { loginUser } from "../Services/api";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../Layouts/header";
+import Container from "../Layouts/container";
 
 const Login = () => {
   const cookiesToken = Cookies.get("token");
@@ -43,8 +44,8 @@ const Login = () => {
   }, [navigate]);
 
   return (
-    <>
-      <PageHeader location={"/"} />
+    <Container>
+      <PageHeader navigateTo={"/"} />
       <div className="container">
         <div className="row">
           <div className="col">
@@ -85,7 +86,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </>
+    </Container>
   );
 };
 

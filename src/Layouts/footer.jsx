@@ -1,5 +1,5 @@
 import React from "react";
-import PlainCard from "../Components/Cards/plainCard";
+import { PlainCard } from "../Components/Cards/Cards";
 import './styles/footer.css'
 
 const Footer = () => {

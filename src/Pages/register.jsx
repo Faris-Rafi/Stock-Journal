@@ -4,6 +4,7 @@ import { Input } from "../Components/InputForm/inputForm";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { addUser } from "../Services/api";
+import Container from "../Layouts/container";
 
 const Register = () => {
   const cookiesToken = Cookies.get("token");
@@ -45,8 +46,8 @@ const Register = () => {
   };
 
   return (
-    <>
-      <PageHeader location={"/login"} />
+    <Container>
+      <PageHeader navigateTo={"/login"} />
       <div className="container">
         <div className="row">
           <div className="col">
@@ -102,7 +103,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </>
+    </Container>
   );
 };
 

@@ -1,0 +1,31 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-style {
+    max-width: 450px;
+    max-height: 90vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: #FFF;
+    width: 90%;
+    padding: 20px 20px;
+    z-index: 1000;
+    overflow-y: scroll;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+}
+
+.modal-style::-webkit-scrollbar {
+    display: none;
+}
