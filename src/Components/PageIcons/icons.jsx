@@ -51,18 +51,18 @@ export const Icons = ({ iconName, title, navigateTo, disabled }) => {
   );
 };
 
-export const IconsBetween = ({ bg, icon, context, value }) => {
+export const IconsBetween = ({ bg, icon, context, value, className }) => {
   return (
     <>
       <div className="d-flex justify-content-between my-3">
-        <div className="d-flex mb-2">
+        <div className="d-flex">
           <div className={`${bg} px-2 py-1 rounded-circle me-2`}>
             <i className={`${icon} text-white`}></i>
           </div>
           <small className="py-1">{context}</small>
         </div>
         <div className="d-flex">
-          <small className="py-1">
+          <small className={`py-1 ${className}`}>
             <NumericFormat
               displayType="text"
               thousandSeparator={true}
@@ -71,6 +71,44 @@ export const IconsBetween = ({ bg, icon, context, value }) => {
               prefix="Rp. "
             />
           </small>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export const IconsBurg = ({
+  bg,
+  icon,
+  context,
+  className,
+  value,
+  contextEnd,
+  valueEnd,
+}) => {
+  return (
+    <>
+      <div className="d-flex justify-content-between">
+        <div className="d-flex align-items-center">
+          <div className={`${bg} px-2 py-1 rounded-circle me-3`}>
+            <i className={`${icon} text-white`}></i>
+          </div>
+          <div className="d-flex flex-column">
+            <small className={`${className}`}>{context}</small>
+            <small className={`${className}`}>
+              <NumericFormat
+                displayType="text"
+                thousandSeparator={true}
+                allowNegative={true}
+                value={value}
+                prefix="Rp. "
+              />
+            </small>
+          </div>
+        </div>
+        <div className="d-flex flex-column">
+          <small className={`${className} text-center`}>{contextEnd}</small>
+          <small className={`${className} text-center`}>{valueEnd}</small>
         </div>
       </div>
     </>

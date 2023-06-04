@@ -36,16 +36,16 @@ export const NumericInput = ({
   onKeyDown,
   onChange,
   error,
+  placeholder,
 }) => {
   return (
     <div className="form-group mt-3">
-      <label className="form-label">
-        {inputLabel}
-      </label>
+      <label className="form-label">{inputLabel}</label>
       <NumericFormat
         thousandSeparator={true}
         allowNegative={allowN}
         name={nameInput}
+        placeholder={placeholder}
         className={`form-control shadow-sm ${error && "is-invalid"}`}
         value={value}
         onKeyDown={onKeyDown}
@@ -67,9 +67,7 @@ export const SelectInput = ({
 }) => {
   return (
     <div className="form-group mt-3">
-      <label className="form-label">
-        {inputLabel}
-      </label>
+      <label className="form-label">{inputLabel}</label>
       <select
         name={nameInput}
         className={`form-select shadow-sm ${error && "is-invalid"}`}

@@ -48,3 +48,12 @@ export const getFeeTransaction = async () => {
     console.log(error);
   }
 };
+
+export const getAraArbRules = async () => {
+  try {
+    const response = await api.get("/ara-arb-rules");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

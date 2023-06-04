@@ -1,5 +1,6 @@
 import React from "react";
 import { NumericFormat } from "react-number-format";
+import { IconsBurg } from "../PageIcons/icons";
 
 export const PlainCard = ({ children, bg }) => {
   return (

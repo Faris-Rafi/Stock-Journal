@@ -25,3 +25,13 @@ export const roundCeil = (price) => {
     return Math.ceil(price / 25) * 25;
   }
 };
+
+export const percentage = (price) => {
+  if (price <= 200) {
+    return 35;
+  } else if (price <= 5000) {
+    return 25;
+  } else {
+    return 20;
+  }
+};
