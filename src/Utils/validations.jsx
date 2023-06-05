@@ -206,3 +206,25 @@ export const validationAraArb = ({ calculateForm, setErrors }) => {
     return errorMessage;
   });
 };
+
+export const avgValidation = ({ form, setErrors }) => {
+  setErrors((prevErrors) => {
+    const errorMessage = [...prevErrors];
+
+    if (!form.stock_name || !form.capital_limit) {
+      if (!form.stock_name) {
+        errorMessage[0] = "Nama saham wajib diisi.";
+      } else {
+        errorMessage[0] = "";
+      }
+      
+      if (!form.capital_limit) {
+        errorMessage[1] = "Modal wajib diisi.";
+      } else {
+        errorMessage[1] = "";
+      }
+    }
+
+    return errorMessage;
+  });
+};

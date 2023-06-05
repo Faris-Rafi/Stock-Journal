@@ -17,7 +17,7 @@ export const Input = ({
       <input
         type={typeInput}
         name={nameInput}
-        className={`form-control ${error && "is-invalid"}`}
+        className={`form-control shadow-sm ${error && "is-invalid"}`}
         placeholder={placeholder}
         value={value}
         onKeyDown={onKeyDown}

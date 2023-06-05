@@ -57,3 +57,36 @@ export const getAraArbRules = async () => {
     console.log(error);
   }
 };
+
+export const getAvgData = async (cookiesToken) => {
+  try {
+    const response = await api.get("/averaging", {
+      headers: { Authorization: `Bearer ${cookiesToken}` },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteAvgData = async (cookiesToken, id) => {
+  try {
+    const response = await api.delete(`/averaging/${id}`, {
+      headers: { Authorization: `Bearer ${cookiesToken}` },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addAvgData = async (cookiesToken, form) => {
+  try {
+    const response = await api.post(`averaging`, form, {
+      headers: { Authorization: `Bearer ${cookiesToken}` },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

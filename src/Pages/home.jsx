@@ -49,12 +49,20 @@ const Home = () => {
       )}
       <p className="fw-bold mt-3">Alat & Lainnya</p>
       <div className="row">
-        <Icons
-          iconName={"bi bi-graph-up"}
-          title={"AVG Up / Down"}
-          navigateTo={"/select-avg"}
-          disabled={true}
-        />
+        {!username ? (
+          <Icons
+            iconName={"bi bi-graph-up"}
+            title={"Jurnal AVG"}
+            navigateTo={"/select-avg"}
+            disabled={true}
+          />
+        ) : (
+          <Icons
+            iconName={"bi bi-graph-up"}
+            title={"Jurnal AVG"}
+            navigateTo={"/select-avg"}
+          />
+        )}
         <Icons
           iconName={"bi bi-calculator-fill"}
           title={"Kalkulator Saham"}
