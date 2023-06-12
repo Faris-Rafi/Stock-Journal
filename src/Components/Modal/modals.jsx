@@ -71,7 +71,6 @@ export const FeeModal = ({
               className="bi bi-x-lg"
               style={{ cursor: "pointer" }}
               onClick={() => {
-                calculateForm.fee = "1";
                 onClose();
               }}
             ></i>
@@ -162,6 +161,7 @@ export const FeeAVGModal = ({
   };
 
   const handleSubmit = () => {
+    console.log(avgDetail.custom_fee.length);
     if (form.fee_transaction_id != 0) {
       const fetchData = async () => {
         const journalUpdate = await updateAvgData(
@@ -175,7 +175,7 @@ export const FeeAVGModal = ({
 
       fetchData();
     } else {
-      if (avgDetail.custom_fee.length != 0) {
+      if (avgDetail.custom_fee.length < 1) {
         const fetchData = async () => {
           const journalUpdate = await addCustomFee(cookiesToken, customFee);
           const journalUpdates = await updateAvgData(
@@ -275,6 +275,7 @@ export const OptionModal = ({
   onClose,
   calculateForm,
   setCalculateForm,
+  setIsValid,
 }) => {
   const [errors, setErrors] = useState(["", "", ""]);
   const [isCountValid, setIsCountValid] = useState(false);
@@ -286,11 +287,10 @@ export const OptionModal = ({
   };
 
   const handleSubmit = () => {
-    validationAraArb({ calculateForm, setErrors, setIsCountValid });
+    validationAraArb({ calculateForm, setErrors, setIsCountValid, setIsValid });
   };
 
   useEffect(() => {
-    console.log(isCountValid);
     if (isCountValid) {
       setIsCountValid(false);
       onClose();
@@ -310,8 +310,6 @@ export const OptionModal = ({
               className="bi bi-x-lg"
               style={{ cursor: "pointer" }}
               onClick={() => {
-                calculateForm.araCount = 2;
-                calculateForm.arbCount = 5;
                 onClose();
               }}
             ></i>

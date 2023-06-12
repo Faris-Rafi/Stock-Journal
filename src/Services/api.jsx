@@ -160,7 +160,7 @@ export const addCustomFee = async (cookiesToken, customForm) => {
 
 export const editCustomFee = async (id, cookiesToken, customForm) => {
   try {
-    const response = await api.post(`/custom-fee/${id}`, customForm, {
+    const response = await api.patch(`/custom-fee/${id}`, customForm, {
       headers: { Authorization: `Bearer ${cookiesToken}` },
     });
     return response.data.data;
