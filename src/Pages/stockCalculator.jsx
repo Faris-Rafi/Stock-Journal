@@ -17,6 +17,7 @@ const StockCalculator = () => {
   const [resultData, setResultData] = useState();
   const [isChecked, setIsChecked] = useState("Y");
   const [errors, setErrors] = useState(["", "", "", ""]);
+  const [isValid, setIsValid] = useState(false);
   const [customFee, setCustomFee] = useState({
     buy: "",
     sell: "",
@@ -50,12 +51,15 @@ const StockCalculator = () => {
   }, []);
 
   const handleSubmit = () => {
-    validation({ calculateForm, setErrors });
-
-    if (errors.every((error) => error === "")) {
-      calculation({ calculateForm, fees, setResultData, isChecked, customFee });
-    }
+    validation({ calculateForm, setErrors, setIsValid });
   };
+
+  useEffect(() => {
+    if (isValid) {
+      calculation({ calculateForm, fees, setResultData, isChecked, customFee });
+      setIsValid(false);
+    }
+  }, [isValid]);
 
   if (isLoading) return <Loading />;
 
@@ -90,7 +94,7 @@ const StockCalculator = () => {
         onChange={handleInputChange}
         error={errors[1]}
       />
-      <div className="d-flex justify-content-between align-items-center mx-2">
+      <div className="d-flex justify-content-between align-items-center mt-3">
         <div className="form-check">
           <input
             className="form-check-input shadow-sm"

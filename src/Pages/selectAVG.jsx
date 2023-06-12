@@ -12,6 +12,7 @@ const SelectAVG = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [id, setId] = useState();
   const [avgJournals, setAvgJournals] = useState();
   const [fees, setFees] = useState();
 
@@ -51,41 +52,89 @@ const SelectAVG = () => {
           .map((detail) => {
             let purchased = 0;
 
-            if (journal.is_fee_counting == "Y") {
-              fees
-                .filter((item) => item.id == journal.fee_transaction_id)
-                .map((fee) => {
-                  purchased = Math.round(
-                    parseInt(
-                      detail.price * (detail.lot * 100) +
+            if (detail.action_type != "b") {
+              if (journal.is_fee_counting == "Y") {
+                if (journal.fee_transaction_id != 0) {
+                  fees
+                    .filter((item) => item.id == journal.fee_transaction_id)
+                    .map((fee) => {
+                      purchased = Math.round(
                         parseInt(
-                          (fee.buy / 100) * (detail.price * (detail.lot * 100))
+                          detail.price * (detail.lot * 100) -
+                            (fee.sell / 100) *
+                              (detail.price * (detail.lot * 100))
                         )
-                    )
-                  );
-                });
-            } else {
-              purchased = detail.price * (detail.lot * 100);
-            }
+                      );
+                    });
+                } else {
+                  journal.custom_fee.map((fee) => {
+                    purchased = parseInt(
+                      detail.price * (detail.lot * 100) -
+                        (fee.sell / 100) * (detail.price * (detail.lot * 100))
+                    );
+                  });
+                }
+              } else {
+                purchased = detail.price * (detail.lot * 100);
+              }
 
-            totalPrice += parseInt(detail.price * detail.lot);
-            totalLot += parseInt(detail.lot);
-            totalPurchase += parseInt(purchased);
+              totalPrice -= parseInt(detail.price);
+              totalLot -= parseInt(detail.lot);
+              totalPurchase -= parseInt(purchased);
+            } else {
+              if (journal.is_fee_counting == "Y") {
+                if (journal.fee_transaction_id != 0) {
+                  fees
+                    .filter((item) => item.id == journal.fee_transaction_id)
+                    .map((fee) => {
+                      purchased = Math.round(
+                        parseInt(
+                          detail.price * (detail.lot * 100) +
+                            (fee.buy / 100) *
+                              (detail.price * (detail.lot * 100))
+                        )
+                      );
+                    });
+                } else {
+                  journal.custom_fee.map((fee) => {
+                    purchased = parseInt(
+                      detail.price * (detail.lot * 100) +
+                        (fee.buy / 100) * (detail.price * (detail.lot * 100))
+                    );
+                  });
+                }
+              } else {
+                purchased = detail.price * (detail.lot * 100);
+              }
+              totalPrice += parseInt(detail.price);
+              totalLot += parseInt(detail.lot);
+              totalPurchase += parseInt(purchased);
+            }
           });
 
         if (totalLot > 0) {
-          totalAvg = totalPrice / totalLot;
+          totalAvg = (totalPrice * totalLot) / totalLot;
           let targetSell = 0;
 
           if (journal.is_fee_counting == "Y") {
-            fees
-              .filter((item) => item.id == journal.fee_transaction_id)
-              .map((fee) => {
-                targetSell = Math.round(
+            if (journal.fee_transaction_id != 0) {
+              fees
+                .filter((item) => item.id == journal.fee_transaction_id)
+                .map((fee) => {
+                  targetSell = Math.round(
+                    journal.target_sell * (totalLot * 100) -
+                      (fee.sell / 100) *
+                        (journal.target_sell * (totalLot * 100))
+                  );
+                });
+            } else {
+              journal.custom_fee.map((fee) => {
+                targetSell = parseInt(
                   journal.target_sell * (totalLot * 100) -
                     (fee.sell / 100) * (journal.target_sell * (totalLot * 100))
                 );
               });
+            }
           } else {
             targetSell = journal.target_sell * (totalLot * 100);
           }
@@ -108,13 +157,17 @@ const SelectAVG = () => {
               targetSell={journal.target_sell}
               profit={totalProfit}
               profitColor={totalProfit < 0 ? "text-danger" : "text-success"}
-              delOnClick={() => setIsDeleteOpen(true)}
+              delOnClick={() => {
+                setIsDeleteOpen(true);
+                setId(journal.id);
+              }}
               navigateTo={`/detail-avg/${journal.uuid}`}
             />
             <DeleteAVGModal
-              dataId={journal.id}
+              dataId={id}
               dataName={journal.stock_name}
               onClose={() => setIsDeleteOpen(false)}
+              avgJournals={avgJournals}
               setAvgJournals={setAvgJournals}
               cookiesToken={cookiesToken}
               Open={isDeleteOpen}

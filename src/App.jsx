@@ -6,6 +6,7 @@ import Register from "./Pages/register";
 import StockCalculator from "./Pages/stockCalculator";
 import AraArb from "./Pages/araArb";
 import SelectAVG from "./Pages/selectAVG";
+import DetailAVG from "./Pages/detailAVG";
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/select-avg" element={<SelectAVG />} />
-        <Route path="/detail-avg/:uuid" element={<SelectAVG />} />
+        <Route path="/detail-avg/:uuid" element={<DetailAVG />} />
         <Route path="/stock-calculator" element={<StockCalculator />} />
         <Route path="/ara-arb" element={<AraArb />} />
       </Routes>

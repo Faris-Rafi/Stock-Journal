@@ -1,10 +1,14 @@
 import React from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import "./styles/header.css";
+
+import jurhamLogo from "../assets/Jurham.id.png";
+import jurhamLogo2 from "../assets/Jurham.id-right.png";
 
 export const Header = (data) => {
   const navigate = useNavigate();
-  
+
   const handleClick = () => {
     navigate("/login");
   };
@@ -17,15 +21,25 @@ export const Header = (data) => {
   return (
     <div className="container border-bottom mb-3">
       <div className="d-flex justify-content-between align-items-center">
-        <p className="fs-5">Jurham</p>
+        <span className="mb-2">
+          <img src={jurhamLogo} alt="jurham logo" width={110} height={45} />
+        </span>
         {data.data === undefined ? (
-          <p style={{ cursor: "pointer" }} onClick={handleClick}>
+          <span
+            className="mb-2"
+            style={{ cursor: "pointer" }}
+            onClick={handleClick}
+          >
             Login <i className="bi bi-box-arrow-in-left"></i>
-          </p>
+          </span>
         ) : (
-          <p style={{ cursor: "pointer" }} onClick={handleLogout}>
+          <span
+            className="mb-2"
+            style={{ cursor: "pointer" }}
+            onClick={handleLogout}
+          >
             Logout <i className="bi bi-box-arrow-in-right"></i>
-          </p>
+          </span>
         )}
       </div>
     </div>
@@ -40,10 +54,16 @@ export const PageHeader = ({ navigateTo }) => {
   };
 
   return (
-    <div className="container border-bottom mb-3">
-      <p style={{ cursor: "pointer" }} onClick={handleClick}>
-        <i className="bi bi-arrow-left"></i> Back
-      </p>
-    </div>
+    <>
+      <div className="container mb-3">
+        <div className="d-flex justify-content-between align-items-center">
+          <span style={{ cursor: "pointer" }} onClick={handleClick}>
+            <i className="bi bi-arrow-left"></i> Back
+          </span>
+          <img src={jurhamLogo2} alt="" width={50} height={45} />
+        </div>
+      </div>
+      <div className="border-bottom mb-3" />
+    </>
   );
 };

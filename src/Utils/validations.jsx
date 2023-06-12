@@ -11,7 +11,9 @@ export const onChangeValidation = ({ name, value, setErrors }) => {
       name === "lot" ||
       name === "fee" ||
       name === "araCount" ||
-      name === "arbCount"
+      name === "arbCount" ||
+      name === "price" ||
+      name === "target_sell"
     ) {
       if (name === "purchase") {
         const values = value.replace(/,/g, "");
@@ -68,8 +70,46 @@ export const onChangeValidation = ({ name, value, setErrors }) => {
           errorMessage[0] = "Harga penutup tidak boleh kurang dari 50.";
         } else if (values > 200000) {
           errorMessage[0] = "Harga penutup tidak boleh lebih dari 200.000.";
+        }
+      }
+
+      if (name === "price") {
+        const values = parseInt(value.replace(/,/g, ""));
+
+        if (values > 200000) {
+          errorMessage[0] = "Harga beli tidak boleh lebih dari 200.000.";
         } else {
           errorMessage[0] = "";
+        }
+
+        if (values <= 200000) {
+          if (values != roundFloor(values)) {
+            errorMessage[0] = `Harga tidak tersedia, pakai ${roundFloor(
+              values
+            )} atau ${roundCeil(values)}`;
+          } else {
+            errorMessage[0] = "";
+          }
+        }
+      }
+
+      if (name === "target_sell") {
+        const values = parseInt(value.replace(/,/g, ""));
+
+        if (values > 200000) {
+          errorMessage[0] = "Harga beli tidak boleh lebih dari 200.000.";
+        } else {
+          errorMessage[0] = "";
+        }
+
+        if (values <= 200000) {
+          if (values != roundFloor(values)) {
+            errorMessage[0] = `Harga tidak tersedia, pakai ${roundFloor(
+              values
+            )} atau ${roundCeil(values)}`;
+          } else {
+            errorMessage[0] = "";
+          }
         }
       }
 
@@ -110,7 +150,7 @@ export const onChangeValidation = ({ name, value, setErrors }) => {
   });
 };
 
-export const validation = ({ calculateForm, setErrors }) => {
+export const validation = ({ calculateForm, setErrors, setIsValid }) => {
   const purchaseValue = parseInt(calculateForm.purchase.replace(/,/g, ""));
   const sellValue = parseInt(calculateForm.selling.replace(/,/g, ""));
   const lotValue = parseInt(calculateForm.lot.replace(/,/g, ""));
@@ -161,14 +201,52 @@ export const validation = ({ calculateForm, setErrors }) => {
       }
     }
 
+    if (
+      !errorMessage[0] &&
+      !errorMessage[1] &&
+      !errorMessage[2] &&
+      !errorMessage[3]
+    ) {
+      setIsValid(true);
+    }
+
     return errorMessage;
   });
 };
 
-export const validationAraArb = ({ calculateForm, setErrors }) => {
+export const customFeeValidation = ({ customFee, setErrors, setIsValid }) => {
+  setErrors((prevErrors) => {
+    const errorMessage = [...prevErrors];
+
+    if (!customFee.buy) {
+      errorMessage[0] = "Fee beli wajib diisi";
+    } else {
+      errorMessage[0] = "";
+    }
+
+    if (!customFee.sell) {
+      errorMessage[1] = "Fee jual wajib diisi";
+    } else {
+      errorMessage[1] = "";
+    }
+
+    if (!errorMessage[0] && !errorMessage[1]) {
+      setIsValid(true);
+    }
+
+    return errorMessage;
+  });
+};
+
+export const validationAraArb = ({
+  calculateForm,
+  setErrors,
+  setIsValid,
+  setIsCountValid,
+}) => {
   const closingPrice = parseInt(calculateForm.closingPrice.replace(/,/g, ""));
-  const araCount = parseInt(calculateForm.araCount.replace(/,/g, ""));
-  const arbCount = parseInt(calculateForm.arbCount.replace(/,/g, ""));
+  const araCount = parseInt(calculateForm.araCount);
+  const arbCount = parseInt(calculateForm.arbCount);
 
   setErrors((prevErrors) => {
     const errorMessage = [...prevErrors];
@@ -203,6 +281,14 @@ export const validationAraArb = ({ calculateForm, setErrors }) => {
       }
     }
 
+    if (!errorMessage[0]) {
+      setIsValid(true);
+    }
+
+    if (setIsCountValid && !errorMessage[1] && !errorMessage[2]) {
+      setIsCountValid(true);
+    }
+
     return errorMessage;
   });
 };
@@ -211,17 +297,90 @@ export const avgValidation = ({ form, setErrors }) => {
   setErrors((prevErrors) => {
     const errorMessage = [...prevErrors];
 
-    if (!form.stock_name || !form.capital_limit) {
+    if (!form.stock_name || !form.capital_limit || !form.target_sell) {
       if (!form.stock_name) {
         errorMessage[0] = "Nama saham wajib diisi.";
       } else {
         errorMessage[0] = "";
       }
-      
+
       if (!form.capital_limit) {
         errorMessage[1] = "Modal wajib diisi.";
       } else {
         errorMessage[1] = "";
+      }
+    }
+
+    return errorMessage;
+  });
+};
+
+export const avgTargetSell = ({ inputValues, setErrors, setIsValid }) => {
+  const targetSell = parseInt(inputValues.target_sell.replace(/,/g, ""));
+  setErrors((prevErrors) => {
+    const errorMessage = [...prevErrors];
+
+    if (!targetSell) {
+      errorMessage[0] = "Target jual wajib diisi.";
+    }
+
+    if (targetSell <= 200000) {
+      if (targetSell != roundFloor(targetSell)) {
+        errorMessage[0] = `Harga tidak tersedia, pakai ${roundFloor(
+          targetSell
+        )} atau ${roundCeil(targetSell)}`;
+      }
+    }
+
+    if (targetSell > 200000) {
+      errorMessage[0] = "Harga beli tidak boleh lebih dari 200.000.";
+    }
+
+    if (!errorMessage[0]) setIsValid(true);
+    return errorMessage;
+  });
+};
+
+export const avgDetailValidation = ({
+  calculateForm,
+  setErrors,
+  totalPrice,
+  totalLot,
+}) => {
+  const priceValue = parseInt(calculateForm.price.replace(/,/g, ""));
+  const lotValue = parseInt(calculateForm.lot.replace(/,/g, ""));
+  const actionType = calculateForm.action_type;
+
+  setErrors((prevErrors) => {
+    const errorMessage = [...prevErrors];
+
+    if (!priceValue) {
+      errorMessage[0] = "Harga beli wajib diisi.";
+    }
+
+    if (!lotValue) {
+      errorMessage[2] = "Lot wajib diisi.";
+    }
+
+    if (actionType != "b") {
+      if (priceValue > totalPrice) {
+        errorMessage[0] = "Harga Jual tidak boleh lebih dari total saham anda.";
+      }
+
+      if (lotValue > totalLot) {
+        errorMessage[2] = "Jumlah Lot tidak boleh lebih dari total lot anda.";
+      }
+    }
+
+    if (priceValue > 200000) {
+      errorMessage[0] = "Harga beli tidak boleh lebih dari 200.000.";
+    }
+
+    if (priceValue < 200001) {
+      if (priceValue != roundFloor(priceValue)) {
+        errorMessage[0] = `Harga tidak tersedia, pakai ${roundFloor(
+          priceValue
+        )} atau ${roundCeil(priceValue)}`;
       }
     }
 

@@ -20,6 +20,7 @@ const AraArb = () => {
   const [isOpen, setIsOpen] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState(["", "", ""]);
+  const [isValid, setIsValid] = useState(false);
   const [resultData, setResultData] = useState();
   const [calculateForm, setCalculateForm] = useState({
     closingPrice: "",
@@ -45,9 +46,11 @@ const AraArb = () => {
   }, []);
 
   const handleSubmit = () => {
-    validationAraArb({ calculateForm, setErrors });
+    validationAraArb({ calculateForm, setErrors, setIsValid });
+  };
 
-    if (errors.every((error) => error === "")) {
+  useEffect(() => {
+    if (isValid) {
       const ruleValue = calculateForm.rule;
 
       if (ruleValue == 1) {
@@ -69,8 +72,9 @@ const AraArb = () => {
           }
         });
       }
+      setIsValid(false);
     }
-  };
+  }, [isValid]);
 
   if (isLoading) return <Loading />;
 
@@ -177,6 +181,8 @@ const AraArb = () => {
         setCalculateForm={setCalculateForm}
         errors={errors}
         setErrors={setErrors}
+        setIsValid={setIsValid}
+        isValid={isValid}
       />
     </Container>
   );
