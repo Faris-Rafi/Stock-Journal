@@ -91,16 +91,16 @@ export const AvgChart = ({ avgDetail }) => {
     
 
     if (detail.action_type != "b") {
-      totalValue -= parseInt(detail.price);
+      totalValue -= parseInt(detail.price * detail.lot);
       totalLot -= parseInt(detail.lot);
       totalTransaction -= parseInt(detail.price * (detail.lot * 100));
     } else {
-      totalValue += parseInt(detail.price);
+      totalValue += parseInt(detail.price * detail.lot);
       totalLot += parseInt(detail.lot);
       totalTransaction += parseInt(detail.price * (detail.lot * 100));
     }
 
-    totalAvg = (totalValue * totalLot) / totalLot;
+    totalAvg = totalValue / totalLot;
 
     if (totalLot == 0) {
       totalAvg = 0;

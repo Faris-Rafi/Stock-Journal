@@ -78,7 +78,7 @@ const SelectAVG = () => {
                 purchased = detail.price * (detail.lot * 100);
               }
 
-              totalPrice -= parseInt(detail.price);
+              totalPrice -= parseInt(detail.price * detail.lot);
               totalLot -= parseInt(detail.lot);
               totalPurchase -= parseInt(purchased);
             } else {
@@ -106,14 +106,14 @@ const SelectAVG = () => {
               } else {
                 purchased = detail.price * (detail.lot * 100);
               }
-              totalPrice += parseInt(detail.price);
+              totalPrice += parseInt(detail.price * detail.lot);
               totalLot += parseInt(detail.lot);
               totalPurchase += parseInt(purchased);
             }
           });
 
         if (totalLot > 0) {
-          totalAvg = (totalPrice * totalLot) / totalLot;
+          totalAvg = totalPrice / totalLot;
           let targetSell = 0;
 
           if (journal.is_fee_counting == "Y") {

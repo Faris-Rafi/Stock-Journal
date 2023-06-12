@@ -183,6 +183,7 @@ const DetailAVG = () => {
         Open={isEditCapOpen}
         onClose={() => setIsEditCapOpen(false)}
         cookiesToken={cookiesToken}
+        avgDetail={avgDetail}
         setAvgDetail={setAvgDetail}
       />
       <hr />
@@ -224,7 +225,7 @@ const DetailAVG = () => {
           }
           totalAmount -= parseInt(totalWithFee);
           totalLot -= parseInt(detail.lot);
-          totalValue -= parseInt(detail.price);
+          totalValue -= parseInt(detail.price * detail.lot);
         } else {
           if (avgDetail.is_fee_counting == "Y") {
             if (avgDetail.fee_transaction_id != 0) {
@@ -250,11 +251,11 @@ const DetailAVG = () => {
 
           totalAmount += parseInt(totalWithFee);
           totalLot += parseInt(detail.lot);
-          totalValue += parseInt(detail.price);
+          totalValue += parseInt(detail.price * detail.lot);
         }
 
         totalTransaction = totalAmount;
-        totalAvg = (totalValue * totalLot) / totalLot;
+        totalAvg = totalValue / totalLot;
 
         if (totalLot == 0) {
           totalAvg = 0;

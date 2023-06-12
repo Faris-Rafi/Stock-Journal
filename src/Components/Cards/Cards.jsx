@@ -281,7 +281,7 @@ export const ResultAvgCard = ({ bg, avgDetail, onOpen, fees }) => {
       }
 
       totalLot -= parseInt(detail.lot);
-      totalValue -= parseInt(detail.price);
+      totalValue -= parseInt(detail.price * detail.lot);
       totalAmount -= parseInt(totalWithFee);
     } else {
       if (avgDetail.is_fee_counting == "Y") {
@@ -307,12 +307,12 @@ export const ResultAvgCard = ({ bg, avgDetail, onOpen, fees }) => {
       }
 
       totalLot += parseInt(detail.lot);
-      totalValue += parseInt(detail.price);
+      totalValue += parseInt(detail.price * detail.lot);
       totalAmount += parseInt(totalWithFee);
     }
 
     totalTransaction = parseInt(totalAmount);
-    totalAvg = (totalValue * totalLot) / totalLot;
+    totalAvg = totalValue / totalLot;
 
     if (totalLot == 0) {
       totalAvg = 0;
@@ -361,7 +361,7 @@ export const ResultAvgCard = ({ bg, avgDetail, onOpen, fees }) => {
             </div>
             <small className="py-1">
               Total{" "}
-              {avgDetail.is_fee_counting == "Y" ? "(+fee)" : "(tanpa fee)"} :{" "}
+              {avgDetail.is_fee_counting == "Y" ? "(+fee)" : ""} :
             </small>
           </div>
           <div className="d-flex">
@@ -372,8 +372,7 @@ export const ResultAvgCard = ({ bg, avgDetail, onOpen, fees }) => {
                 value={totalTransaction}
                 prefix="Rp."
                 className={`me-1`}
-              />{" "}
-              ({totalLot} Lot)
+              />({totalLot} Lot)
             </small>
           </div>
         </div>

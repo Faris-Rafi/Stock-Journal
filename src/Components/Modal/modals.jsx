@@ -549,12 +549,13 @@ export const EditCapitalAVGModal = ({
   Open,
   onClose,
   cookiesToken,
+  avgDetail,
   setAvgDetail,
 }) => {
   const buttonRef = useRef(null);
   const [errors, setErrors] = useState(["", ""]);
   const [form, setForm] = useState({
-    capital_limit: "",
+    capital_limit: avgDetail.capital_limit,
   });
 
   const handleKeyPress = (event) => {
@@ -566,6 +567,16 @@ export const EditCapitalAVGModal = ({
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+
+    if (name == "capital_limit") {
+      if (value.replace(/,/g, "") > 100000000000000) {
+        setForm({ capital_limit: "1,000,000,000,00000" });
+      }
+
+      if (value.includes(".")) {
+        setForm({ capital_limit: value.replace(".", "") });
+      }
+    }
   };
 
   const handleSubmit = () => {
@@ -573,9 +584,6 @@ export const EditCapitalAVGModal = ({
       const fetchData = async () => {
         const journalUpdate = await updateAvgData(id, cookiesToken, form);
         setAvgDetail(journalUpdate);
-        setForm({
-          capital_limit: "",
-        });
         onClose();
       };
 
@@ -601,15 +609,19 @@ export const EditCapitalAVGModal = ({
           </div>
           <hr />
           <NumericInput
+            allowN={false}
             inputLabel={"Modal"}
             nameInput={"capital_limit"}
             placeholder={"Masukkan modal anda"}
-            error={errors[1]}
+            error={errors[0]}
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
             value={form.capital_limit}
           />
           <span className="text-secondary">*ketik 0 untuk tidak terbatas</span>
+          <span className="text-secondary d-block">
+            *limit 1,000,000,000,000
+          </span>
           <button
             className="btn color__secondary text-white w-100 mt-4 mb-3"
             ref={buttonRef}
