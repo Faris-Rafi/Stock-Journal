@@ -620,7 +620,7 @@ export const EditCapitalAVGModal = ({
           />
           <span className="text-secondary">*ketik 0 untuk tidak terbatas</span>
           <span className="text-secondary d-block">
-            *limit 1,000,000,000,000
+            *limit 100,000,000,000,000
           </span>
           <button
             className="btn color__secondary text-white w-100 mt-4 mb-3"
